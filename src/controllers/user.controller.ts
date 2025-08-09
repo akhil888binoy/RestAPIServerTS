@@ -1,13 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import pkg from 'bcrypt';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import endpoint from '../config/endpoints.config';
+import endpoint from '../config/endpoints.config.ts';
 
 const prisma = new PrismaClient().$extends(withAccelerate())
 
-
-const { bcrypt } = pkg;
 
 const registerUser = async (req: Request , res : Response)=>{
 
@@ -40,7 +38,7 @@ const loginUser = async (req: Request , res: Response )=> {
         const match = await bcrypt.compare(password , user?.password);
         if (match){
 
-            const token = jwt.sign({_id : user?.id.toString(), name : user?.email}, endpoint.SecretKey , {
+            const token = jwt.sign({ _id : user?.id.toString(), name : user?.email}, endpoint.SecretKey , {
                 expiresIn: '2 days',
             });
 

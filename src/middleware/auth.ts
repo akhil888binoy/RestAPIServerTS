@@ -1,15 +1,19 @@
-import jwt , {Secret , JwtPayload} from 'jsonwebtoken';
-import {Request , Response , NextFunction} from 'express';
-import endpoint from "../config/endpoints.config";
+import jwt from 'jsonwebtoken';
+import express from 'express';
+import endpoint from "../config/endpoints.config.ts";
+
+
+const {Request, Response , NextFunction } = express;
+
 
 export interface CustomRequest extends Request {
-    token : string | JwtPayload
+    token : string | jwt.JwtPayload
 }
 
 export const auth = async (req: Request , res : Response , next: NextFunction)=>{
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
-        
+
         if (!token){
             throw new Error();
         }
